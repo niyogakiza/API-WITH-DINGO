@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Dingo\Api\Routing\Router;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+$router = app(Router::class);
+$router->version('v1', function (Router $router) {
+    $router->group(['namespace' => 'App\Http\Controllers'], function (Router $router) {
+        $router->group(['prefix' => 'status'], function(Router $router) {
+            $router->get('ping', 'ServerController@ping');
+        });
+    });
 });
+
